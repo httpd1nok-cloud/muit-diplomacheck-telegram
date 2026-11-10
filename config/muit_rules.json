@@ -1,0 +1,131 @@
+{
+  "university": "Международный университет информационных технологий (МУИТ)",
+  "document": "Методические указания по выполнению дипломной работы (проекта)",
+  "document_code": "ММ-04,I-01",
+  "version_date": "2020-11-18",
+  "reference_path": "reference/muit_methodology_2020.pdf",
+  "reference_note": "Требования извлечены из предоставленной пользователем редакции МУИТ от 18.11.2020. Перед официальным использованием проверьте актуальность редакции и правила выпускающей кафедры.",
+  "format": {
+    "min_body_pages": 60,
+    "font_family": "Times New Roman",
+    "font_size_pt": 14,
+    "line_spacing": 1.0,
+    "page_format": "A4",
+    "margins_mm": {
+      "left": 30,
+      "top": 20,
+      "right": 10,
+      "bottom": 25
+    },
+    "max_intro_pages": 2,
+    "max_conclusion_pages": 1,
+    "reference_style": "IEEE"
+  },
+  "sections": [
+    {
+      "key": "cover",
+      "title": "Обложка",
+      "ref": "6.5–6.6",
+      "required": true
+    },
+    {
+      "key": "title",
+      "title": "Титульный лист",
+      "ref": "6.5, 6.7",
+      "required": true
+    },
+    {
+      "key": "assignment",
+      "title": "Задание",
+      "ref": "6.5, 6.8",
+      "required": true
+    },
+    {
+      "key": "calendar",
+      "title": "Календарный план",
+      "ref": "6.5, 6.9",
+      "required": true
+    },
+    {
+      "key": "annotations",
+      "title": "Аннотация на 3 языках",
+      "ref": "6.5, 6.10",
+      "required": true
+    },
+    {
+      "key": "toc",
+      "title": "Содержание",
+      "ref": "6.5, 6.11",
+      "required": true
+    },
+    {
+      "key": "intro",
+      "title": "Введение",
+      "ref": "6.5, 6.12",
+      "required": true
+    },
+    {
+      "key": "main",
+      "title": "Основная часть",
+      "ref": "6.5, 6.13–6.16",
+      "required": true
+    },
+    {
+      "key": "conclusion",
+      "title": "Заключение",
+      "ref": "6.5, 6.18",
+      "required": true
+    },
+    {
+      "key": "references",
+      "title": "Список использованной литературы",
+      "ref": "6.5, 6.19, 7.39",
+      "required": true
+    },
+    {
+      "key": "appendix",
+      "title": "Приложения",
+      "ref": "6.5, 6.20, 7.40–7.43",
+      "required": true
+    }
+  ],
+  "rubric": [
+    {
+      "name": "Творческая способность",
+      "max_points": 25,
+      "ref": "Приложение 2 (печатная стр. 19)",
+      "assessable_from_document": "partially"
+    },
+    {
+      "name": "Научное мышление",
+      "max_points": 25,
+      "ref": "Приложение 2 (печатная стр. 19)",
+      "assessable_from_document": "partially"
+    },
+    {
+      "name": "Эффективность использования методов исследования",
+      "max_points": 12,
+      "ref": "Приложение 2 (печатная стр. 19)",
+      "assessable_from_document": "partially"
+    },
+    {
+      "name": "Степень раскрытия темы",
+      "max_points": 12,
+      "ref": "Приложение 2 (печатная стр. 19)",
+      "assessable_from_document": "partially"
+    },
+    {
+      "name": "Ораторское мастерство, качество демонстрационного материала",
+      "max_points": 10,
+      "ref": "Приложение 2 (печатная стр. 19)",
+      "assessable_from_document": "no"
+    },
+    {
+      "name": "Уровень координации членов команды",
+      "max_points": 16,
+      "ref": "Приложение 2 (печатная стр. 19)",
+      "assessable_from_document": "no"
+    }
+  ],
+  "grading_note": "Шкала Приложения 2 является рекомендуемой. Итоговый балл по результатам защиты выставляет аттестационная комиссия; по одному файлу нельзя оценить выступление и работу команды."
+}

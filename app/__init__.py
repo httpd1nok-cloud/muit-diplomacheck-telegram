@@ -1,0 +1,1 @@
+"""МУИТ Diploma Checker MVP."""
