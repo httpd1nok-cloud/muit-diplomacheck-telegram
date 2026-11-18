@@ -23,6 +23,7 @@ from .ai_advisor import ai_reply, enabled
 from .engine import InvalidDocument, MAX_BYTES, RULES, analyze
 from .i18n import t
 from .knowledge import offline_answer
+from .offline_advisor import infer_domain
 
 ROOT=Path(__file__).resolve().parents[1]
 load_dotenv(ROOT/'.env')
@@ -151,6 +152,7 @@ async def clear(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data.pop('last_report',None)
     # Revoking consent also prevents future AI sends until renewed.
     context.user_data['ai_consent']=False
+    context.user_data.pop('topic_domain',None)
     await update.effective_message.reply_text(t(lang,'cleared'),reply_markup=keyboard_menu(lang))
 
 
@@ -178,6 +180,7 @@ async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
             context.user_data['history']=[]
             context.user_data.pop('last_report',None)
             context.user_data['ai_consent']=False
+            context.user_data.pop('topic_domain',None)
         await query.edit_message_text(t(lang,'welcome'),reply_markup=keyboard_menu(lang))
         return
     lang=context.user_data.get('lang')
@@ -200,6 +203,7 @@ async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
         context.user_data['history']=[]
         context.user_data.pop('last_report',None)
         context.user_data['ai_consent']=False
+        context.user_data.pop('topic_domain',None)
         await query.edit_message_text(t(lang,'cleared'),reply_markup=keyboard_menu(lang))
     elif data=='menu:advice':
         context.user_data['chat_mode']=True
@@ -210,7 +214,7 @@ async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
         elif enabled():
             await query.edit_message_text(t(lang,'ai_ready')+'\n\n'+t(lang,'hint_advice'),reply_markup=keyboard_menu(lang))
         else:
-            await query.edit_message_text(t(lang,'hint_advice')+'\n\n'+t(lang,'no_ai'),reply_markup=keyboard_menu(lang))
+            await query.edit_message_text(t(lang,'hint_advice'),reply_markup=keyboard_menu(lang))
     elif data=='ai:yes':
         context.user_data['ai_consent']=True
         await query.edit_message_text(t(lang,'ai_ready')+'\n\n'+t(lang,'hint_advice'),reply_markup=keyboard_menu(lang))
@@ -293,10 +297,13 @@ async def question(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not content:return
     if len(content)>2000:
         await update.effective_message.reply_text('Сұрақты 2000 таңбаға дейін қысқартыңыз.' if lang=='kk' else 'Сократите вопрос до 2000 символов.');return
+    current_domain=infer_domain(content)
+    if current_domain:
+        context.user_data['topic_domain']=current_domain
     if _limited(update.effective_user.id,'chat',LIMIT_QUESTIONS):
         await update.effective_message.reply_text(t(lang,'limit'));return
     if enabled() and context.user_data.get('ai_consent') and _ai_quota_exceeded():
-        output=('AI тәуліктік лимиті бітті. Методичка бойынша жауап:' if lang=='kk' else 'Достигнут дневной лимит AI. Ответ по методичке:')+'\n\n'+offline_answer(content,lang)
+        output=('AI тәуліктік лимиті бітті. Методичка бойынша жауап:' if lang=='kk' else 'Достигнут дневной лимит AI. Ответ по методичке:')+'\n\n'+offline_answer(content,lang,domain=context.user_data.get('topic_domain'))
     elif enabled() and context.user_data.get('ai_consent'):
         try:
             output=await asyncio.wait_for(asyncio.to_thread(
@@ -308,9 +315,9 @@ async def question(update: Update, context: ContextTypes.DEFAULT_TYPE):
             del history[:-10]
         except Exception:
             log.exception('AI request failed')
-            output=t(lang,'ai_error')+'\n\n'+offline_answer(content,lang)
+            output=offline_answer(content,lang,domain=context.user_data.get('topic_domain'))
     else:
-        output=_last_report_answer(context.user_data.get('last_report'),content,lang) or offline_answer(content,lang)
+        output=_last_report_answer(context.user_data.get('last_report'),content,lang) or offline_answer(content,lang,domain=context.user_data.get('topic_domain'))
     for pos in range(0,len(output),3600):
         await update.effective_message.reply_text(output[pos:pos+3600],reply_markup=keyboard_menu(lang) if pos+3600>=len(output) else None)
 

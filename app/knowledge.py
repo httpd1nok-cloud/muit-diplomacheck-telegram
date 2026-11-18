@@ -114,12 +114,7 @@ def retrieve(question: str, top_k: int = 5) -> list[dict]:
     return [db[num] for num in selected]
 
 
-def offline_answer(question: str, lang: str) -> str:
-    topic = find_topic(question)
-    if topic:
-        overview = ANSWERS[topic][lang]
-        related = TOPICS[topic]['clauses'][:3]
-        header = '📚 Методичка МУИТ:' if lang=='ru' else '📚 МУИТ методичкасы:'
-        return f'{header}\n\n{overview}\n\n' + ('Пункты: ' if lang=='ru' else 'Тармақтар: ') + ', '.join('§'+c for c in related) + ('\n\nДля индивидуальных советов по теме можно подключить AI-консультанта.' if lang=='ru' else '\n\nТақырыбыңыз бойынша жеке кеңес үшін AI-кеңесшіні қосуға болады.')
-    ids = ', '.join('§'+x['id'] for x in retrieve(question,3))
-    return ('Не нашёл точного ответа в методичке. Уточните вопрос: структура, введение, оформление, IEEE, формулы или защита. См. ' + ids if lang=='ru' else 'Методичкадан нақты жауап табылмады. Сұрақты нақтылаңыз: құрылым, кіріспе, рәсімдеу, IEEE, формулалар немесе қорғау. Қараңыз: ' + ids)
+def offline_answer(question: str, lang: str, domain: str | None = None) -> str:
+    """Detailed no-cost advice (no external service)."""
+    from .offline_advisor import explain
+    return explain(question, lang, domain)
