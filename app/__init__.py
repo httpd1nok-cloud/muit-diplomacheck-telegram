@@ -1,1 +1,1 @@
-"""МУИТ Diploma Checker MVP."""
+"""DiplomaCheck: Telegram document checker and bilingual diploma consultant."""
